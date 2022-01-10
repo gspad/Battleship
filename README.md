@@ -1,14 +1,10 @@
 
 # ***BattleShip***
 
----
-
 Sample BattleShip game to practice with some design patterns (namely, observer pattern).
 
 
 ## ***Instructions***
-
----
 
 
 1) Package the jar with 'mvn clean package'
@@ -21,8 +17,6 @@ Sample BattleShip game to practice with some design patterns (namely, observer p
 
 
 ### ***TODO***
-
----
 
 Make the UI prettier.
 
