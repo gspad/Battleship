@@ -1,10 +1,6 @@
-<<<<<<< HEAD
-#***BattleShip***
 
-
-=======
 ***BattleShip***
->>>>>>> c42360a484c5f02a872b525e0cd17edec281571e
+
 Sample BattleShip game to practice with some design patterns (namely, observer pattern).
 
 ---
