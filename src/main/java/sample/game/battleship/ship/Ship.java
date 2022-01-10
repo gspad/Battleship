@@ -1,4 +1,4 @@
-package sample.game.battleship.Ship;
+package sample.game.battleship.ship;
 
 import sample.game.battleship.observable.Observable;
 

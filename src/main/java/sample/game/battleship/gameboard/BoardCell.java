@@ -1,6 +1,6 @@
 package sample.game.battleship.gameboard;
 
-import sample.game.battleship.Ship.ShipPart;
+import sample.game.battleship.ship.ShipPart;
 
 /**
  * BoardCell represents a cell on the game board. A cell can either be empty (represented by symbol '~'

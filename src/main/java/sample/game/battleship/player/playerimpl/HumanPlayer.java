@@ -1,6 +1,6 @@
 package sample.game.battleship.player.playerimpl;
 
-import sample.game.battleship.Ship.Ship;
+import sample.game.battleship.ship.Ship;
 import sample.game.battleship.enums.BoardSide;
 import sample.game.battleship.player.Player;
 import sample.game.battleship.player.move.MoveBounds;

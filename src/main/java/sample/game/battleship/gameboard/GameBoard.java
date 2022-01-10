@@ -1,6 +1,6 @@
 package sample.game.battleship.gameboard;
 
-import sample.game.battleship.Ship.*;
+import sample.game.battleship.ship.*;
 import sample.game.battleship.enums.BoardSide;
 
 import java.util.Iterator;

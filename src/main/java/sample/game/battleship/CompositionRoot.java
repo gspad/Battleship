@@ -4,12 +4,11 @@ import sample.game.battleship.gamerunner.GameContext;
 import sample.game.battleship.gameboard.BoardCell;
 import sample.game.battleship.gameboard.GameBoard;
 import sample.game.battleship.player.Player;
-import sample.game.battleship.Ship.*;
+import sample.game.battleship.ship.*;
 import sample.game.battleship.player.playerimpl.ComputerPlayer;
 import sample.game.battleship.player.playerimpl.HumanPlayer;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
 
