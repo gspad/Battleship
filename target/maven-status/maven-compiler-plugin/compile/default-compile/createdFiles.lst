@@ -1,0 +1,15 @@
+sample\game\battleship\player\move\MoveBounds.class
+sample\game\battleship\Ship\ShipPart.class
+sample\game\battleship\gamerunner\GameContext.class
+sample\game\battleship\player\Player.class
+sample\game\battleship\player\playerimpl\ComputerPlayer.class
+sample\game\battleship\gamerunner\GameRunner.class
+sample\game\battleship\observable\Observable.class
+sample\game\battleship\BattleshipGame.class
+sample\game\battleship\gameboard\BoardCell.class
+sample\game\battleship\CompositionRoot.class
+sample\game\battleship\enums\BoardSide.class
+sample\game\battleship\player\playerimpl\HumanPlayer.class
+sample\game\battleship\enums\GameStatus.class
+sample\game\battleship\gameboard\GameBoard.class
+sample\game\battleship\Ship\Ship.class
