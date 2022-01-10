@@ -1,4 +1,6 @@
 #***BattleShip***
+
+
 Sample BattleShip game to practice with some design patterns (namely, observer pattern).
 
 ---
