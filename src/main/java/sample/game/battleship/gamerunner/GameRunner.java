@@ -122,7 +122,7 @@ public class GameRunner implements PropertyChangeListener
         while(this.gameStatus == GameStatus.RUNNING)
         {
             //print board
-            System.out.println("\n" + currentPlayer.getName() + "'s turn....");
+            System.out.println("\n" + currentPlayer.getName() + "'s turn.....");
             //make current player move
             MoveBounds currentPlayerMoveBounds = currentPlayer.getBoardSide() == BoardSide.BOTTOM ? moveBounds[0] : moveBounds[1];
             currentPlayer.makeMove(gameBoard,currentPlayerMoveBounds);
