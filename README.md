@@ -7,10 +7,10 @@ Sample BattleShip game to practice with some design patterns (namely, observer p
 ## ***Instructions***
 
 
-1) Package the jar with 'mvn clean package'
+1) Package the jar with 'mvn clean package' (cd into root directory 'Battleship'). 
 
 
-2) CD into target dir and run 'java -jar Battleship-1.0-SNAPSHOT-jar-with-dependencies.jar'
+2) CD into 'target' dir and run 'java -jar Battleship-1.0-SNAPSHOT-jar-with-dependencies.jar'
 
 
 3) play the game!
