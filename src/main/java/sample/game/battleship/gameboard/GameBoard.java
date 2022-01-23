@@ -38,7 +38,7 @@ public class GameBoard
     public static GameBoard newGameBoard(BoardCell[][] board, List<Ship> p1Ships, List<Ship> p2Ships)
     {
         GameBoard gameboard = new GameBoard(board,p1Ships,p2Ships);
-        gameboard.placeShips(p1Ships,board.length/2,board.length-1);
+        gameboard.placeShips(p1Ships,board.length/2,board.length);
         gameboard.placeShips(p2Ships,0,board.length/2-1);
         return gameboard;
     }
@@ -55,18 +55,17 @@ public class GameBoard
         //Extract some of this shit into functions.
         for(Ship ship : ships)
         {
-            int shipSize = ship.getSize();
-            boolean isHorizontal = true;
+            boolean isHorizontal;
             boolean isValidPlacement = false;
 
             while(!isValidPlacement)
             {
                 isHorizontal = randomGenerator.nextBoolean();
                 int x = randomGenerator.nextInt(lowerBound,upperBound);
-                int y = randomGenerator.nextInt(0,board.length);
+                int y = randomGenerator.nextInt(0,board[0].length);
                 Iterator<ShipPart> iterator = ship.getShipParts().iterator();
                 //check for valid placement
-                if(!isValid(ship.getSize(),x,y,lowerBound,upperBound,isHorizontal)) continue;
+                if(!isValid(ship.getSize(),x,y,lowerBound,upperBound-1,isHorizontal)) continue;
                 //places ship according to horizontal or vertical direction.
                 placeShip(ship,isHorizontal,x,y);
                 isValidPlacement = true;
@@ -203,9 +202,9 @@ public class GameBoard
      */
     public String revealBottomHalf()
     {
-        String rows = "ABCDEFGHIJKLMNOP";
+        String rows = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         StringBuilder sb = new StringBuilder();
-        sb.append("\n  0 1 2 3 4 5 6 7 8 9\n");
+        sb.append("\n  1 2 3 4 5 6 7 8 9 10\n");
 
         for(int rowIdx = 0; rowIdx < board.length/2; rowIdx++)
         {
@@ -234,7 +233,7 @@ public class GameBoard
     {
         String rows = "ABCDEFGHIJKLMNOP";
         StringBuilder sb = new StringBuilder();
-        sb.append("\n  0123456789\n");
+        sb.append("\n  1 2 3 4 5 6 7 8 9 10\n");
 
         for(int rowIdx = 0; rowIdx < board.length/2; rowIdx++)
         {
@@ -249,5 +248,10 @@ public class GameBoard
                 sb.append(board[rowIdx][colIdx].toStringHidden());
         }
         return sb.toString();
+    }
+
+    public boolean containsShipAt(int row, int col)
+    {
+        return this.board[row][col].containsShipPart();
     }
 }

@@ -1,5 +1,6 @@
 package sample.game.battleship.player.playerimpl;
 
+import sample.game.battleship.gameboard.GameBoard;
 import sample.game.battleship.ship.Ship;
 import sample.game.battleship.enums.BoardSide;
 import sample.game.battleship.player.Player;
@@ -60,26 +61,46 @@ public class HumanPlayer extends Player
      * @returns a String with the player's input if valid.
      */
     @Override
-    public String makeMove(MoveBounds moveBounds)
+    public void makeMove(GameBoard gameBoard, MoveBounds moveBounds)
     {
-        int rowLowerBound = moveBounds.getRowsLowerBound();
-        boolean isValidMove = false;
-        String move = "";
+        //print board
+        System.out.println(gameBoard.toString(super.getBoardSide()));
+        int[] move;
 
-        while(!isValidMove)
+        do
         {
-            System.out.println("Enter a coordinate:");
-            move = scanner.next();
-            if(move.isBlank() || move.isEmpty()) continue;
-
-            int rowChoice = Character.toLowerCase(move.charAt(0));
-            int colChoice = Character.getNumericValue(move.charAt(1));
-
-            isValidMove = rowChoice >= moveBounds.getRowsLowerBound() && rowChoice <= moveBounds.getRowsUpperBound()
-                    && colChoice >= moveBounds.getColsLowerBound() && colChoice <= moveBounds.getColsUpperBound();
-
-            if(!isValidMove) System.out.println("Please make a valid move!");
+            move = getPlayerMove();
         }
+        while(!isValidMove(move[0],move[1],moveBounds));
+
+        if(!gameBoard.containsShipAt(move[0],move[1])) System.out.println("You have missed!");
+        gameBoard.hit(move[0],move[1]);
+    }
+
+    private int[] getPlayerMove()
+    {
+        String moveInput = "";
+        int[] move = new int[2];
+
+        while(moveInput.length() < 2)
+        {
+            System.out.println("Enter coordinates (type QUIT to quit the game...coward.):");
+            moveInput = scanner.next();
+        }
+
+        if(moveInput.equalsIgnoreCase("quit"))
+            this.forcePlayerToLose();
+
+        try
+        {
+            move[0] = Character.toLowerCase(moveInput.charAt(0)) - 97;
+            move[1] = Integer.parseInt(moveInput.substring(1)) - 1;
+        }
+        catch(NumberFormatException e)
+        {
+            return new int[] {Integer.MIN_VALUE, Integer.MIN_VALUE};
+        }
+
         return move;
     }
 
@@ -97,5 +118,11 @@ public class HumanPlayer extends Player
         }
         else
             System.out.println("The enemy has hit your ship!");
+    }
+
+    @Override
+    public void cleanup()
+    {
+        this.scanner.close();
     }
 }

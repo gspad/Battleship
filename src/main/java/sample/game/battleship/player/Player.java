@@ -1,5 +1,6 @@
 package sample.game.battleship.player;
 
+import sample.game.battleship.gameboard.GameBoard;
 import sample.game.battleship.ship.Ship;
 import sample.game.battleship.enums.BoardSide;
 import sample.game.battleship.observable.Observable;
@@ -38,7 +39,10 @@ public abstract class Player implements PropertyChangeListener,Observable
     {
         this.numberOfShipsLeft--;
         if(this.numberOfShipsLeft == 0)
+        {
+            this.cleanup();
             this.firePlayerLostEvent();
+        }
     }
 
     /**
@@ -96,7 +100,7 @@ public abstract class Player implements PropertyChangeListener,Observable
      * prompts the player to make a move. HumanPlayer and ComputerPlayer handle this differently.
      * @param moveRestrictions encapsulates this player's move restrictions with respect to the chosen coordinates.
      */
-    public abstract String makeMove(MoveBounds moveRestrictions);
+    public abstract void makeMove(GameBoard gameBoard, MoveBounds moveRestrictions);
 
     /**
      * sets this player's name
@@ -115,6 +119,22 @@ public abstract class Player implements PropertyChangeListener,Observable
         return this.name;
     }
 
+    protected boolean isValidMove(int rowToHit, int colToHit, MoveBounds moveBounds)
+    {
+        boolean isValidMove = rowToHit >= moveBounds.getRowsLowerBound() && rowToHit <= moveBounds.getRowsUpperBound()
+                && colToHit >= moveBounds.getColsLowerBound() && colToHit <= moveBounds.getColsUpperBound();
+
+        if(!isValidMove) System.out.println("Invalid move!");
+        return isValidMove;
+    }
+
+    protected void forcePlayerToLose()
+    {
+        this.firePlayerLostEvent();
+        System.exit(0);
+    }
+
+    public abstract void cleanup();
 
 }
 

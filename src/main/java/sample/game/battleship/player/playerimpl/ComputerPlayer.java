@@ -1,5 +1,6 @@
 package sample.game.battleship.player.playerimpl;
 
+import sample.game.battleship.gameboard.GameBoard;
 import sample.game.battleship.ship.Ship;
 import sample.game.battleship.enums.BoardSide;
 import sample.game.battleship.player.Player;
@@ -53,7 +54,8 @@ public class ComputerPlayer extends Player
      * @param moveBounds the move bounds, indicating where the player can and cannot fire.
      */
     @Override
-    public String makeMove(MoveBounds moveBounds) {
+    public void makeMove(GameBoard gameBoard, MoveBounds moveBounds)
+    {
         try
         {
             Thread.sleep(2000);
@@ -63,12 +65,16 @@ public class ComputerPlayer extends Player
             e.printStackTrace();
         }
 
-        String possibleRows = "abcdefghijklmnopqrstuvwxyz";
+        int[] move = new int[] {Integer.MIN_VALUE,Integer.MIN_VALUE};
         Random random = new Random();
-        int col = random.nextInt(moveBounds.getColsLowerBound(), moveBounds.getColsUpperBound());
-        char row = (char) random.nextInt(moveBounds.getRowsLowerBound(), moveBounds.getRowsUpperBound());
-        StringBuilder sb = new StringBuilder().append(row).append(col);
-        return sb.toString();
+
+        do
+        {
+            move[0] = random.nextInt(moveBounds.getRowsLowerBound(), moveBounds.getRowsUpperBound()+1);
+            move[1] = random.nextInt(moveBounds.getColsLowerBound(), moveBounds.getColsUpperBound());
+        }
+        while(!isValidMove(move[0],move[1],moveBounds));
+        gameBoard.hit(move[0],move[1]);
     }
 
     /**
@@ -84,6 +90,12 @@ public class ComputerPlayer extends Player
             this.destroyShip();
         }
         else
-            System.out.println("You have hit an enemy ship!!");
+            System.out.println("You hit an enemy ship!!");
+    }
+
+    //nothing to clean up, for now.
+    public void cleanup()
+    {
+
     }
 }

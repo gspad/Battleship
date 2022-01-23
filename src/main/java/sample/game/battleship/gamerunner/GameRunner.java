@@ -5,13 +5,8 @@ import sample.game.battleship.enums.GameStatus;
 import sample.game.battleship.gameboard.GameBoard;
 import sample.game.battleship.player.Player;
 import sample.game.battleship.player.move.MoveBounds;
-import sample.game.battleship.player.playerimpl.HumanPlayer;
-
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
 import java.util.Scanner;
 
 /**
@@ -23,7 +18,6 @@ public class GameRunner implements PropertyChangeListener
     private final GameBoard gameBoard;
     private final Player p1;
     private final Player p2;
-    private Map<Character,Integer> letterToRowDict;
     private GameStatus gameStatus = GameStatus.RUNNING;
 
     /**
@@ -62,14 +56,6 @@ public class GameRunner implements PropertyChangeListener
         p2.addListener(this);
         p1.setBoardSide(BoardSide.BOTTOM);
         p2.setBoardSide(BoardSide.TOP);
-        letterToRowDict = new HashMap<>();
-        int rowValue = 0;
-
-        for(Character ch = 'a'; ch <= 'j'; ch++)
-        {
-            letterToRowDict.put(ch,rowValue);
-            rowValue++;
-        }
 
         if(p1.getName() == null)
             p1.setName("Player 1");
@@ -85,26 +71,9 @@ public class GameRunner implements PropertyChangeListener
      */
     public void run()
     {
-        String possibleRows = "abcdefghijklmnopqrstuvwxyz";
-        MoveBounds p1MoveBounds = new MoveBounds(possibleRows.charAt(0),possibleRows.charAt(gameBoard.getNumRows()/2-1),0,gameBoard.getNumColumns());
-        MoveBounds p2MoveBounds = new MoveBounds(possibleRows.charAt(gameBoard.getNumRows()/2),possibleRows.charAt(gameBoard.getNumRows()),0, gameBoard.getNumColumns());
-        Player currentPlayer = p1;
-
-        while(this.gameStatus == GameStatus.RUNNING)
-        {
-            BoardSide sideToPrint = p1 instanceof HumanPlayer ? p1.getBoardSide() : p2.getBoardSide();
-            System.out.println(gameBoard.toString(sideToPrint));
-            System.out.println("\n" + currentPlayer.getName() + "'s turn!\n");
-
-            MoveBounds moveBounds = currentPlayer.getBoardSide() == BoardSide.BOTTOM ? p1MoveBounds : p2MoveBounds;
-            String playerMove = currentPlayer.makeMove(moveBounds).toLowerCase();
-
-            int row = letterToRowDict.get(playerMove.charAt(0));
-            int col = Character.getNumericValue(playerMove.charAt(1));
-
-            this.gameBoard.hit(row,col);
-            currentPlayer = currentPlayer == p1? p2 : p1;
-        }
+        //checks for player input command to begind the game.
+        this.checkForStartCommand();
+        this.runGameLoop();
     }
 
     /**
@@ -130,5 +99,56 @@ public class GameRunner implements PropertyChangeListener
     private void setGameStatus(GameStatus gameStatus)
     {
         this.gameStatus = gameStatus;
+    }
+
+    private void checkForStartCommand()
+    {
+        System.out.println("Type KITTENS to start the game");
+        String beginCommand = "";
+
+        Scanner scanner = new Scanner(System.in);
+        while(!beginCommand.equalsIgnoreCase("KITTENS")) {
+            beginCommand = scanner.next();
+            if(!beginCommand.equalsIgnoreCase("KITTENS"))
+                System.out.println("invalid command");
+        }
+    }
+
+    private void runGameLoop()
+    {
+        MoveBounds[] moveBounds = getPlayerMoveBounds();
+        Player currentPlayer = p1;
+
+        while(this.gameStatus == GameStatus.RUNNING)
+        {
+            //print board
+            System.out.println("\n" + currentPlayer.getName() + "'s turn....");
+            //make current player move
+            MoveBounds currentPlayerMoveBounds = currentPlayer.getBoardSide() == BoardSide.BOTTOM ? moveBounds[0] : moveBounds[1];
+            currentPlayer.makeMove(gameBoard,currentPlayerMoveBounds);
+            //switch players
+            currentPlayer = currentPlayer == p1? p2 : p1;
+        }
+        p1.cleanup();
+        p2.cleanup();
+    }
+
+    private MoveBounds[] getPlayerMoveBounds()
+    {
+        MoveBounds p1MoveBounds = MoveBounds.builder()
+                .withLowerRowLimit(0)
+                .withUpperRowLimit(gameBoard.getNumRows()/2-1)
+                .withLowerColLimit(0)
+                .withUpperColLimit(gameBoard.getNumColumns()-1)
+                .build();
+
+        MoveBounds p2MoveBounds = MoveBounds.builder()
+                .withLowerRowLimit(gameBoard.getNumRows()/2)
+                .withUpperRowLimit(gameBoard.getNumRows()-1)
+                .withLowerColLimit(0)
+                .withUpperColLimit(gameBoard.getNumColumns()-1)
+                .build();
+
+        return new MoveBounds[]{p1MoveBounds,p2MoveBounds};
     }
 }
